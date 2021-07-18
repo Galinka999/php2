@@ -3,9 +3,9 @@
 namespace Sprint\Migration;
 
 
-class _2filtergrid20210713182354 extends Version
+class Filter_Grid_end20210718154756 extends Version
 {
-    protected $description = "Применение main/ui/grid, настройка фильтра, сортировки.";
+    protected $description = "Работает фильтр, сортировка, навигация";
 
     protected $moduleVersion = "3.28.8";
 

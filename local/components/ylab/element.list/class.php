@@ -31,13 +31,12 @@ class ElementListComponent extends CBitrixComponent
      * Метод executeComponent
      *
      * @return mixed|void
-     * @throws ArgumentException
-     * @throws LoaderException
-     * @throws ObjectPropertyException
-     * @throws SystemException
+     * @throws Exception
      */
     public function executeComponent()
     {
+//        Loader::includeModule('iblock');
+
         $this->idIBlock = self::getIBlockIdByCode('lesson2');
 
 //       $this->arResult['ITEMS'] = $this->getElements();
@@ -55,14 +54,19 @@ class ElementListComponent extends CBitrixComponent
     {
         $result = [];
 
+        //Навигация
+        if (!$this->getGridNav()->allRecordsShown()) {
+            $arNav['iNumPage'] = $this->getGridNav()->getCurrentPage();//получаем номер страницы
+            $arNav['nPageSize'] = $this->getGridNav()->getPageSize(); //кол-во элементов на странице
+        } else {
+            $arNav = false;
+        }
+
         //Формируем массив для сортировки
-        $arOrder = $this->getGridSort();
+        $arOrder = $this->getObGridParams()->getSorting(['sort' => ['ID' => 'DESC']])['sort'];
 
         //Формируем массив для фильтра
         $arFilter = $this->getArrFilter();
-
-        //Навигация
-        $arNav = $this->getArrNav();
 
         $elements = CIBlockElement::GetList(
             $arOrder,
@@ -71,6 +75,8 @@ class ElementListComponent extends CBitrixComponent
             $arNav,
             ['ID', 'IBLOCK_ID', 'PROPERTY_TITLE', 'PROPERTY_PRICE', 'PROPERTY_PERCENT', 'PROPERTY_STATUS']
         );
+
+        $this->getGridNav()->setRecordCount($elements->SelectedRowsCount());
 
         while ($element = $elements->GetNext()) {
             $total = round(((int)$element['PROPERTY_PRICE_VALUE'] * (int)$element['PROPERTY_PERCENT_VALUE']) / 100 +(int)$element['PROPERTY_PRICE_VALUE']);
@@ -154,32 +160,6 @@ class ElementListComponent extends CBitrixComponent
     }
 
     /**
-     * Возвращает массив arOrder для подстановки в GetList.
-     *
-     * @return array
-     */
-    public function getGridSort()
-    {
-        $gridSort = $this->getObGridParams()->getSorting();
-
-        foreach ($gridSort['sort'] as $key => $value) {
-            $item = $key;
-        }
-
-        if ($gridSort['sort'][$item] && $item != 'ID')
-        {
-            $arOrder = [
-                'PROPERTY_' . $item => $gridSort['sort'][$item],
-            ];
-        } else {
-            $arOrder = [
-                'ID' => $gridSort['sort']['ID'],
-            ];
-        }
-        return $arOrder;
-    }
-
-    /**
      * Параметры навигации грида
      *
      * @return PageNavigation
@@ -192,26 +172,12 @@ class ElementListComponent extends CBitrixComponent
             $this->gridNav
                 ->allowAllRecords(true)
                 ->setPageSize($this->getObGridParams()->GetNavParams()['nPageSize'])
-                ->setRecordCount(count($this->getElements()))
+//                ->setRecordCount(count($this->getElements()))
                 ->initFromUri();
 
 //            var_dump($this->gridNav);
         }
         return $this->gridNav;
-    }
-
-    /**
-     * Возвращает массив arNavStartParams для подстановки в GetList.
-     *
-     * @return array
-     */
-    private function getArrNav()
-    {
-        $nPageSize = $this->getObGridParams()->GetNavParams()['nPageSize'];
-        $arNav = [
-            'nPageSize' => $nPageSize,
-        ];
-        return  $arNav;
     }
 
     /**
@@ -282,19 +248,19 @@ class ElementListComponent extends CBitrixComponent
             [
                 'id' => 'TITLE',
                 'name' => Loc::getMessage('YLAB.ELEMENT.LIST.CLASS.TITLE'),
-                'sort' => 'TITLE',
+                'sort' => 'PROPERTY_TITLE',
                 'default' => true,
             ],
             [
                 'id' => 'PRICE',
                 'name' => Loc::getMessage('YLAB.ELEMENT.LIST.CLASS.PRICE'),
-                'sort' => 'PRICE',
+                'sort' => 'PROPERTY_PRICE',
                 'default' => true,
             ],
             [
                 'id' => 'PERCENT',
                 'name' => Loc::getMessage('YLAB.ELEMENT.LIST.CLASS.PERCENT'),
-                'sort' => 'PERCENT',
+                'sort' => 'PROPERTY_PERCENT',
                 'default' => true,
             ],
             [
@@ -305,7 +271,7 @@ class ElementListComponent extends CBitrixComponent
             [
                 'id' => 'STATUS',
                 'name' => Loc::getMessage('YLAB.ELEMENT.LIST.CLASS.STATUS'),
-                'sort' => 'STATUS',
+                'sort' => 'PROPERTY_STATUS',
                 'default' => true,
             ],
         ];
