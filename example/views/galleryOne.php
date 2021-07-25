@@ -9,3 +9,5 @@
             <button>Купить</button>
         </div>
 <?php endif; ?>
+
+<!--test3-->
