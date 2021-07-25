@@ -15,4 +15,8 @@ class GalleryController extends Controller
             'gallery'=> $gallery
         ]);
     }
+    public function actionGalleryOne()
+    {
+
+    }
 }

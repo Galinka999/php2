@@ -4,7 +4,6 @@
     <h3>К сожалению доступных товаров нет.</h3>
 <?php else: ?>
 <div class="flex flex-wrap" id="catalog">
-<!--    --><?//= $content ?>
     <?php foreach ($catalog as $item): ?>
         <div class="good-big vvv">
             <a class="photo"  href="../?c=good&a=card&id=<?= $item['id']?>">
@@ -22,13 +21,6 @@
 
 <button id="showmore-btn" data-page="<?= $page ?>" data-max="<?= $count ?>">Еще</button>
 
-
-
-<?php // if ( $count >= ($page+1)) : ?>
-<!--    <button>-->
-<!--        <a href="../?c=good&a=catalog&page=--><?//= $page ?><!--">Еще</a>-->
-<!--    </button>-->
-<?php //endif; ?>
 
 
 
