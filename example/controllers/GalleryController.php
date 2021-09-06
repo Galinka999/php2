@@ -9,7 +9,7 @@ class GalleryController extends Controller
 {
     public function actionGallery()
     {
-        $gallery = Gallery::getGallery();
+        $gallery = Gallery::getAll();
 //        var_dump($gallery);
         echo $this->render('gallery', [
             'gallery'=> $gallery
@@ -17,6 +17,10 @@ class GalleryController extends Controller
     }
     public function actionGalleryOne()
     {
-
+        $id = (int)$_GET['id'];
+        $galleryOne = Gallery::getOne($id);
+        echo $this->render('galleryOne',[
+            'galleryOne' => $galleryOne
+        ]);
     }
 }

@@ -4,7 +4,7 @@
     <?php if($gallery) : ?>
         <?php foreach ($gallery as $value): ?>
         <div class="gallery">
-            <a class="photo" href="&image_id=<?= $value['id']?>">
+            <a class="photo" href="../?c=gallery&a=galleryOne&id=<?= $value['id']?>">
                 <img class="gallery_item" src="/images/big/<?= $value['filename']?>"/>
             </a>
         </div>

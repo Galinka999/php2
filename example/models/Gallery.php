@@ -10,12 +10,10 @@ class Gallery extends DbModel
     public $filename;
     public $likes;
 
-    public static function getGallery()
+    public function __construct($filename = null, $likes = null)
     {
-        $tableName = static ::getTableName();
-        $sql = "SELECT * FROM {$tableName}";
-//        var_dump(Db::getInstanсe()->queryAll($sql, $params = null));
-        return Db::getInstanсe()->queryAll($sql, $params = null);
+        $this->filename = $filename;
+        $this->likes = $likes;
     }
 
     public static function getTableName()

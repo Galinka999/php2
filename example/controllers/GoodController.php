@@ -32,7 +32,7 @@ class GoodController extends Controller
 
     public function actionAjax()
     {
-        $page = $_GET['page'];
+        $page = (int)$_GET['page'];
         $limit = $this->limit;
         $start = $page*2;
         $catalog = Good::getLimit($start, $limit);

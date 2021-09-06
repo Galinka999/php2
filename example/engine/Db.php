@@ -75,7 +75,7 @@ class Db
         $stmt->bindValue(1, $start, \PDO::PARAM_INT);
         $stmt->execute();
 //        var_dump($stmt);
-        return $stmt;  //вернуть результат execute
+        return $stmt->fetchAll();  //вернуть результат execute
     }
 
     public function queryOneObject($sql, $params, $class)
