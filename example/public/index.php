@@ -9,6 +9,7 @@ include_once "../engine/Autoload.php";
 use app\models\{Good, User, Order, News, Basket};
 use app\engine\Autoload;
 use app\engine\Db;
+use app\engine\Render;
 
 spl_autoload_register([new Autoload(), 'loadClass']); //регистрирует автозагрузчик
 
@@ -22,7 +23,7 @@ $controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller
 //var_dump($controllerClass);
 if (class_exists($controllerClass))
 {
-    $controller = new $controllerClass();
+    $controller = new $controllerClass(new Render());
 //    var_dump($controller);
     if(isset($actionName)) {
         $controller->runAction($actionName);

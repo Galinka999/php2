@@ -4,12 +4,26 @@
 namespace app\controllers;
 
 
+use app\engine\Render;
+use app\interfaces\IRenderer;
+
 abstract class Controller
 {
     private $action;
     private $defaultAction = 'index';
     private $defailtLayuot = 'main';
     private $useLayuot = true;
+
+    private $renderer;
+
+    /**
+     * Controller constructor.
+     */
+    public function __construct(IRenderer $render)
+    {
+        $this->renderer = $render;
+    }
+
 
     public function runAction($action = null)
     {
@@ -36,12 +50,6 @@ abstract class Controller
 
     public function renderTemplate($template, $params = [])
     {
-        ob_start();  //стартует буфер, все последующие include, echo не будут выводиться на стр, а будут запоминаться
-        extract($params);   //извлекаем переменные из массива
-        $templatePath = VIEWS_DIR . $template . ".php";
-        if (file_exists($templatePath)) {
-            include_once $templatePath;
-        }
-        return ob_get_clean(); //очищаем буфер и возвращаем его текст (т.е.шаблона)
+        return $this->renderer->renderTemplate($template, $params);
     }
 }
