@@ -16,6 +16,10 @@ abstract class DbModel extends Model
 //        return Db::getInstanсe()->queryAllObject($sql, $params = null, static::class);   //ВЫВОДИТ МАССИВ С ОБЪЕКТАМИ НЕ РАБОТАЕТ!
     }
 
+    public static function  getWhere($name, $value) {
+        //TODO собрать запрос вида WHERE 'login' = 'admin'
+    }
+
 //    public static function getLimit($limit)
 //    {
 //        $tableName = static::getTableName();
@@ -41,19 +45,19 @@ abstract class DbModel extends Model
     public function insert()
     {
         $params =[];
-        $columns =[];
-        foreach ($this as $key => $value)
+        $colums =[];
+
+        foreach ($this->props as $key => $value)
         {
-            if ($key == "id") continue;   //пропускаем поле id, оно не участвует в запросе
-            $params[":{$key}"] = $value;
-            $columns[] = $key;
+            $params[":{$key}"] = $this->$key;
+            $colums[] = $key;
             // var_dump($key . " => " . $value);
         }
-        $columns = implode(", ", $columns);
+        $colums = implode(", ", $colums);
         $values = implode(", ", array_keys($params));
-        //var_dump($columns, $values);
+        //var_dump($colums, $values);
         $tableName = static::getTableName();
-        $sql = "INSERT INTO {$tableName} ($columns) VALUES ($values)";
+        $sql = "INSERT INTO {$tableName} ($colums) VALUES ($values)";
         //var_dump($sql);
         Db::getInstanсe()->execute($sql, $params);
         $this->id = Db::getInstanсe()->lastInsertId();
@@ -62,7 +66,21 @@ abstract class DbModel extends Model
 
     public function update()
     {
+        $params =[];
+        $colums =[];
 
+        foreach ($this->props as $key => $value) {
+            if ($value) continue;
+            $params[":{$key}"] = $this->$key;
+            $colums[].= "`{$key}` = :{$key}";
+            $this->props[$key] = false;
+        }
+        $colums = implode(",", $colums);
+        $tableName = static::getTableName();
+        $params['id'] = $this->id;
+        $sql = "UPDATE `{$tableName}` SET {$colums} WHERE `id` = :id";
+        Db::getInstanсe()->execute($sql, $params);
+        //return $this;
     }
 
     public function delete()

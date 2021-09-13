@@ -6,11 +6,18 @@ namespace app\models;
 
 class News extends DbModel
 {
-    public $id = null;
-    public $title;
-    public $text;
-    public $photo;
-    public $likes;
+    protected $id = null;
+    protected $title;
+    protected $text;
+    protected $photo;
+    protected $likes;
+
+    protected $props = [
+        'title' => false,
+        'text' => false,
+        'photo' => false,
+        'likes' => false
+    ];
 
 
     public static function getTableName()

@@ -5,9 +5,14 @@ namespace app\models;
 
 class User extends DbModel
 {
-    public $id = null;
-    public $login;
-    public $pass;
+    protected $id = null;
+    protected $login;
+    protected $pass;
+
+    protected $props = [
+        'login' => false,
+        'pass' => false
+    ];
 
     public function __construct($login = null, $pass = null)
     {

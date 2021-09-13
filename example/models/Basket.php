@@ -6,9 +6,14 @@ use app\engine\Db;
 
 class Basket extends DbModel
 {
-    public $id = null;
-    public $session_id;
-    public $good_id;
+    protected $id = null;
+    protected $session_id;
+    protected $good_id;
+
+    protected $props =[
+        'session_id' => false,
+        'good_id' => false
+    ];
 
     public static function getBasket()
     {

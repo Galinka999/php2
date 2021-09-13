@@ -6,9 +6,9 @@ use app\engine\Db;
 
 class Gallery extends DbModel
 {
-    public $id = null;
-    public $filename;
-    public $likes;
+    protected $id = null;
+    protected $filename;
+    protected $likes;
 
     public function __construct($filename = null, $likes = null)
     {

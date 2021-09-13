@@ -10,13 +10,18 @@ use app\interfaces\IModels;
 abstract class Model implements IModels
 {
 
+    protected $props = [];
+
     public function __set($name, $value)
     {
+        //TODO Проверить по propes можно ли вообще менять это поле
+        $this->props['name'] = true;
         $this->$name = $value;
     }
 
     public function __get($name)
     {
+        //TODO Проверить по propes можно ли вообще читать это поле
         return $this->$name;
     }
 

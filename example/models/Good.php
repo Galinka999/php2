@@ -7,12 +7,21 @@ use app\engine\Db;
 
 class Good extends DbModel
 {
-    public $id = null;
+    protected $id = null;
 //    private $name_id = "id_good";
-    public $title;
-    public $description;
-    public $price;
-    public $photo;
+    protected $title;
+    protected $description;
+    protected $price;
+    protected $photo;
+
+
+    //ввожим массмв, чтоб сравнивать изменилось ли поле
+    protected $props = [
+        'title' => false,
+        'description' => false,
+        'price' => false,
+        'photo' => false
+    ];
 
     public function __construct($title = null, $description = null, $price = null, $photo = null)
     {
