@@ -23,7 +23,7 @@ $(function(){
         page++;
 
         $.ajax({
-            url: '/?c=good&a=ajax&page=' + page,
+            url: '/good/ajax/?page=' + page,
             dataType: 'html',
             success: function(data){
                 // alert(page);

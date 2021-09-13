@@ -10,7 +10,7 @@
 <?php endif; ?>
 <div>
     <button>
-        <a href="/?c=gallery&a=gallery">
+        <a href="/gallery/gallery">
             Назад
         </a>
     </button>

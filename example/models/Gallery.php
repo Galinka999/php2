@@ -10,6 +10,11 @@ class Gallery extends DbModel
     protected $filename;
     protected $likes;
 
+    protected $props = [
+        'filename' => false,
+        '$likes' => false
+    ];
+
     public function __construct($filename = null, $likes = null)
     {
         $this->filename = $filename;

@@ -12,9 +12,11 @@ use app\engine\Db;
 
 spl_autoload_register([new Autoload(), 'loadClass']); //регистрирует автозагрузчик
 
+$url = explode('/', $_SERVER['REQUEST_URI']);
+//var_dump($url);
 
-$controllerName = $_GET['c'] ?? 'index';
-$actionName = $_GET['a'];
+$controllerName = $url[1] ?: 'index';
+$actionName = $url[2];
 
 $controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
 //var_dump($controllerClass);
