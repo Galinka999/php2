@@ -25,4 +25,10 @@ abstract class Model implements IModels
         return $this->$name;
     }
 
+    public function __isset($name)
+    {
+        //TODO Проверить существует ли поле и вернуть bool
+        return true;
+    }
+
 }
