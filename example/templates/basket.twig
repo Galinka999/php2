@@ -1,0 +1,9 @@
+<h2>Моя корзина</h2>
+
+{% if basket is null %}
+    <h3>Ваша корзина пуста.</h3>
+{% else %}
+    <div>
+        {{ basket | raw }}
+    </div>
+{% endif %}

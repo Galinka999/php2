@@ -5,4 +5,5 @@ define('ROOT_DIR', dirname(__DIR__));
 define('DS', DIRECTORY_SEPARATOR);
 define('CONTROLLER_NAMESPACE', 'app\\controllers\\');
 define('VIEWS_DIR', '../views/');
+define('TEMPLATES_DIR', '../templates/');
 define('GOOD_PER_PAGE', 2); //лимит товаров на странице

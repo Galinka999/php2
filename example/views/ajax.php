@@ -8,4 +8,4 @@ foreach ($catalog as $item): ?>
             <p>Стоимость: <?= $item['price']?></p>
             <button>Купить</button>
         </div>
-    <?php endforeach; ?>
+<?php endforeach; ?>

@@ -3,14 +3,17 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 session_start();
-//TODO сделать путь абсолютным
-include_once "../config/Config.php";
-include_once "../engine/Autoload.php";
 
 use app\models\{Good, User, Order, News, Basket};
 use app\engine\Autoload;
 use app\engine\Db;
 use app\engine\Render;
+use \app\engine\TwigRender;
+
+//TODO сделать путь абсолютным
+include_once "../config/Config.php";
+include_once "../engine/Autoload.php";
+include_once '../vendor/autoload.php';
 
 spl_autoload_register([new Autoload(), 'loadClass']); //регистрирует автозагрузчик
 
@@ -23,7 +26,7 @@ $controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller
 
 if (class_exists($controllerClass))
 {
-    $controller = new $controllerClass(new Render());
+    $controller = new $controllerClass(new TwigRender());
     if(isset($actionName)) {
         $controller->runAction($actionName);
     } else {
