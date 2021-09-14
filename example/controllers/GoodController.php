@@ -8,19 +8,14 @@ use app\models\Good;
 
 class GoodController extends Controller
 {
-    public $limit = 2;
 
     public function actionCatalog()
     {
-//        $catalog = Good::getAll();
         $page = $_GET['page'] ?? 0;
-//        var_dump($page);
-        $count = ceil(Good::getCount()/$this->limit); // количество страниц
+        $count = ceil(Good::getCount() / GOOD_PER_PAGE); // количество страниц
         $count = $count - 1;
-        $start = $page*$this->limit;
-//        var_dump($start);
-        $limit = ($page+1) * $this->limit;
-//        var_dump($limit);
+        $start = $page * GOOD_PER_PAGE;
+        $limit = ($page + 1) * GOOD_PER_PAGE;
         $catalog = Good::getLimit($start, $limit);
         echo $this->render('catalog', [
             'catalog'=> $catalog,
@@ -33,9 +28,8 @@ class GoodController extends Controller
     public function actionAjax()
     {
         $page = (int)$_GET['page'];
-//        var_dump($page);
-        $limit = $this->limit;
-        $start = $page*2;
+        $limit = GOOD_PER_PAGE;
+        $start = $page * GOOD_PER_PAGE;
         $catalog = Good::getLimit($start, $limit);
         echo $this->renderTemplate('ajax', [
             'catalog'=> $catalog,

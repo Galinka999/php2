@@ -5,6 +5,7 @@
         <div>
             <h3><?= $good->title; ?></h3>
             <img class="img-good-big" src="<?= $good->photo ?>">
+            <p><?=$good->description?></p>
             <p>Стоимость: <?= $good->price; ?></p>
             <button>Купить</button>
         </div>

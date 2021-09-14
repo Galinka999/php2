@@ -8,14 +8,13 @@ use app\engine\Db;
 class Good extends DbModel
 {
     protected $id = null;
-//    private $name_id = "id_good";
     protected $title;
     protected $description;
     protected $price;
     protected $photo;
 
 
-    //ввожим массмв, чтоб сравнивать изменилось ли поле
+    //вводим массив, чтоб сравнивать изменилось ли поле
     protected $props = [
         'title' => false,
         'description' => false,
@@ -41,7 +40,6 @@ class Good extends DbModel
         $tableName = static ::getTableName();
         $sql = "SELECT COUNT(`id`) FROM {$tableName}";
         $total = Db::getInstanсe()->query($sql)->fetch(\PDO::FETCH_COLUMN);
-//        var_dump($total);
         return $total;
     }
 }

@@ -21,6 +21,14 @@ class User extends DbModel
 
     }
 
+    public static function isAuth() {
+        return isset($_SESSION['login']); //если существует значит кто-то авторизован
+    }
+
+    public static function getName() {
+        return $_SESSION['login'];
+    }
+
     public static function getTableName()
     {
         return 'users';

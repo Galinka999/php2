@@ -50,22 +50,10 @@ class Db
 
     public function query($sql, $params = [])
     {
-        //var_dump($sql, $params);
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
-//        var_dump($stmt);
         return $stmt;  // вщзвращает PDO для дальнейшей работы
     }
-
-//    public function queryLimit($sql, $limit)
-//    {
-//        //LIMIT 0, $limit   запрос от первой записи до лимит
-//        $stmt = $this->getConnection()->prepare($sql);
-//        $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
-//        $stmt->execute();
-//        var_dump($stmt);
-//        return $stmt;  //вернуть результат execute
-//    }
 
     public function queryLimit($sql, $start, $limit)
     {
@@ -74,7 +62,6 @@ class Db
         $stmt->bindValue(2, $limit, \PDO::PARAM_INT);
         $stmt->bindValue(1, $start, \PDO::PARAM_INT);
         $stmt->execute();
-//        var_dump($stmt);
         return $stmt->fetchAll();  //вернуть результат execute
     }
 
@@ -93,28 +80,17 @@ class Db
     //ВЫВОДИТ МАССИВ С ОБЪЕКТАМИ
     public function queryAllObject($sql, $params, $class)
     {
-        //var_dump($sql, $params, $class);
         $stmt = $this->query($sql, $params);
         $stmt->setFetchMode(\PDO::FETCH_CLASS | \PDO::PARAM_INT);
-        //var_dump($this->query($sql, $params));
         return $stmt->fetchAll();                           //возвращает объект
     }
 
     //ВЫВОДИТ МАССИВ С МАССИВАМИ
     public function queryAll($sql, $params = [])
     {
-        //var_dump($sql, $params);
         return $this->query($sql, $params)->fetchAll();
     }
 
-//    public function queryCount($sql, $params = [])
-//    {
-//        $stmt = $this->query($sql, $params);
-//        $stmt->setFetchMode(\PDO::FETCH_COLUMN, 1);
-//        $stmt->fetch();
-//        var_dump($stmt);
-//        die();
-//    }
 
     public function execute($sql, $params = [])
     {

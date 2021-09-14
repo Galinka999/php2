@@ -12,7 +12,7 @@ abstract class DbModel extends Model
     {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return Db::getInstanсe()->queryAll($sql, $params = null);                      //ВЫВОДИТ МАССИВ С МАССИВАМИ
+        return Db::getInstanсe()->queryAll($sql);                      //ВЫВОДИТ МАССИВ С МАССИВАМИ
 //        return Db::getInstanсe()->queryAllObject($sql, $params = null, static::class);   //ВЫВОДИТ МАССИВ С ОБЪЕКТАМИ НЕ РАБОТАЕТ!
     }
 
@@ -20,12 +20,6 @@ abstract class DbModel extends Model
         //TODO собрать запрос вида WHERE 'login' = 'admin'
     }
 
-//    public static function getLimit($limit)
-//    {
-//        $tableName = static::getTableName();
-//        $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
-//        return Db::getInstanсe()->queryLimit($sql, $limit);
-//    }
     public static function getLimit($start, $limit)
     {
         $tableName = static::getTableName();
@@ -45,20 +39,18 @@ abstract class DbModel extends Model
     public function insert()
     {
         $params =[];
-        $colums =[];
+        $columns =[];
 
         foreach ($this->props as $key => $value)
         {
             $params[":{$key}"] = $this->$key;
-            $colums[] = $key;
-            // var_dump($key . " => " . $value);
+            $columns[] = $key;
         }
-        $colums = implode(", ", $colums);
+        $columns = implode(", ", $columns);
         $values = implode(", ", array_keys($params));
-        //var_dump($colums, $values);
         $tableName = static::getTableName();
-        $sql = "INSERT INTO {$tableName} ($colums) VALUES ($values)";
-        //var_dump($sql);
+        $sql = "INSERT INTO {$tableName} ($columns) VALUES ($values)";
+        //INSERT INTO {$this->getTableName()}(`name`, `description`, `price`) VALUES (:name, :description, :price)
         Db::getInstanсe()->execute($sql, $params);
         $this->id = Db::getInstanсe()->lastInsertId();
         return $this;
@@ -66,21 +58,20 @@ abstract class DbModel extends Model
 
     public function update()
     {
-        $params =[];
-        $colums =[];
+        $params = [];
+        $columns = [];
 
         foreach ($this->props as $key => $value) {
             if ($value) continue;
             $params[":{$key}"] = $this->$key;
-            $colums[].= "`{$key}` = :{$key}";
+            $columns[].= "`{$key}` = :{$key}";
             $this->props[$key] = false;
         }
-        $colums = implode(",", $colums);
+        $columns = implode(",", $columns);
         $tableName = static::getTableName();
         $params['id'] = $this->id;
-        $sql = "UPDATE `{$tableName}` SET {$colums} WHERE `id` = :id";
+        $sql = "UPDATE `{$tableName}` SET {$columns} WHERE `id` = :id";
         Db::getInstanсe()->execute($sql, $params);
-        //return $this;
     }
 
     public function delete()

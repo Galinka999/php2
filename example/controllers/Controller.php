@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\engine\Render;
 use app\interfaces\IRenderer;
+use app\models\User;
 
 abstract class Controller
 {
@@ -40,7 +41,10 @@ abstract class Controller
         if ($this->useLayuot)
         {
             return $this->renderTemplate("layouts/{$this->defailtLayuot}", [
-                'menu' => $this->renderTemplate('menu', $params),
+                'menu' => $this->renderTemplate('menu', [
+                    'isAuth' => User::isAuth(),
+                    'userName' => User::getName()
+                ]),
                 'content' => $this->renderTemplate($template, $params)
             ]);
         } else {
