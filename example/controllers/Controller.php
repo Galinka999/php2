@@ -43,7 +43,8 @@ abstract class Controller
             return $this->renderTemplate("layouts/{$this->defailtLayuot}", [
                 'menu' => $this->renderTemplate('menu', [
                     'isAuth' => User::isAuth(),
-                    'userName' => User::getName()
+                    'userName' => User::getName(),
+                    'isReg' => true
                 ]),
                 'content' => $this->renderTemplate($template, $params)
             ]);

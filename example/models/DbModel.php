@@ -17,7 +17,10 @@ abstract class DbModel extends Model
     }
 
     public static function  getWhere($name, $value) {
-        //TODO собрать запрос вида WHERE 'login' = 'admin'
+        //собран запрос вида WHERE 'login' = 'admin'
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE `{$name}` = :value";
+        return Db::getInstanсe()->queryOneObject($sql, ['value' => $value], static::class);
     }
 
     public static function getLimit($start, $limit)
