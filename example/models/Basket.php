@@ -15,12 +15,17 @@ class Basket extends DbModel
         'good_id' => false
     ];
 
-    public static function getBasket()
+    public function __construct($session_id = null, $good_id = null)
     {
-        //TODO передать сессию
+        $this->session_id = $session_id;
+        $this->good_id = $good_id;
+    }
+
+    public static function getBasket($session_id)
+    {
         $tableName = static ::getTableName();
         $sql = "SELECT basket.id basket_id, goods.id good_id, goods.title, goods.description,
-        goods.price FROM `{$tableName}`, `goods` WHERE `session_id` = '111' AND basket.good_id = goods.id";
+        goods.price, goods.photo FROM `{$tableName}`, `goods` WHERE `session_id` = '{$session_id}' AND basket.good_id = goods.id";
         return Db::getInstanсe()->queryAll($sql);
     }
 

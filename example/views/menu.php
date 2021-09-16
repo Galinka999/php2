@@ -6,6 +6,7 @@
 <form action="/auth/login" method="post">
     <input type="text" name="login" placeholder="Логин">
     <input type="text" name="pass" placeholder="Пароль">
+    <p>Save?</p> <input type="checkbox" name="save">
     <input type="submit" name="submit" value="Войти">
 </form>
     <br><br><br><br>
@@ -17,6 +18,6 @@
 <a href="/">Главная</a>
 <a href="/good/catalog">Каталог</a>
 <a href="/gallery/gallery">Галерея</a>
-<a href="/basket">Корзина</a>
+<a href="/basket">Корзина (<span id = "count"><?=$count_goods?></span>)</a>
 
 

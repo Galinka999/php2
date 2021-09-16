@@ -34,13 +34,5 @@ class Good extends DbModel
     {
         return 'goods';
     }
-
-    public static function getCount()
-    {
-        $tableName = static ::getTableName();
-        $sql = "SELECT COUNT(`id`) FROM {$tableName}";
-        $total = Db::getInstanсe()->query($sql)->fetch(\PDO::FETCH_COLUMN);
-        return $total;
-    }
 }
 

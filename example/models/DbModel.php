@@ -23,6 +23,20 @@ abstract class DbModel extends Model
         return Db::getInstanсe()->queryOneObject($sql, ['value' => $value], static::class);
     }
 
+    public static function getCountWhere($name, $value) {
+        $tableName = static::getTableName();
+        $sql = "SELECT count(`id`) as count FROM {$tableName} WHERE `{$name}` = :value";
+        return Db::getInstanсe()->queryOne($sql, ['value' => $value])['count'];
+    }
+
+    public static function getCount()
+    {
+        $tableName = static ::getTableName();
+        $sql = "SELECT count(`id`) as count FROM {$tableName}";
+        $total = Db::getInstanсe()->query($sql)->fetch(\PDO::FETCH_COLUMN);
+        return $total;
+    }
+
     public static function getLimit($start, $limit)
     {
         $tableName = static::getTableName();
@@ -79,8 +93,13 @@ abstract class DbModel extends Model
 
     public function delete()
     {
+//        $params = [];
+//        foreach ($this->props as $key => $value)
+//        {
+//            $params[":{$key}"] = $this->$key;
+//        }
         $tableName = static::getTableName();
-        $sql = "DELETE FROM {$tableName} WHERE id = :id";  //$this->>id
+        $sql = "DELETE FROM `{$tableName}` WHERE id = :id";  //$this->>id
         return Db::getInstanсe()->execute($sql, ['id' => $this->id]);
     }
 
