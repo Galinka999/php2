@@ -7,10 +7,12 @@
         <img class="img-good-big" src="<?= $good->photo ?>">
         <p><?=$good->description?></p>
         <p>Стоимость: <?= $good->price; ?></p>
-        <form action="../../basket/add" method="post">
-            <input type="text" name="id_good" hidden value="<?= $good->id ?>">
-            <button type="submit">Купить</button>
-        </form>
+        <button data-id="<?= $good->id; ?>" class="buy">Купить</button>
+
+<!--        <form action="../../basket/add" method="post">-->
+<!--            <input type="text" name="id_good" hidden value="--><?//= $good->id ?><!--">-->
+<!--            <button type="submit">Купить</button>-->
+<!--        </form>-->
     </div>
 
 <?php endif; ?>

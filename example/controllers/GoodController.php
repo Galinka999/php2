@@ -11,16 +11,14 @@ class GoodController extends Controller
 
     public function actionCatalog()
     {
-        $page = $_GET['page'] ?? 0;
+        $page = $_GET['page'] ?: 1;
         $count = ceil(Good::getCount() / GOOD_PER_PAGE); // количество страниц
-        $count = $count - 1;
-        $start = $page * GOOD_PER_PAGE;
-        $limit = ($page + 1) * GOOD_PER_PAGE;
+        $start = 0;
+        $limit = $page * GOOD_PER_PAGE;
         $catalog = Good::getLimit($start, $limit);
         echo $this->render('catalog', [
             'catalog'=> $catalog,
             'page' => $page,
-            'limit'=> $limit,
             'count' => $count,
         ]);
     }
@@ -28,13 +26,15 @@ class GoodController extends Controller
     public function actionAjax()
     {
         $page = (int)$_GET['page'];
-        $limit = GOOD_PER_PAGE;
-        $start = $page * GOOD_PER_PAGE;
-        $catalog = Good::getLimit($start, $limit);
-        echo $this->renderTemplate('ajax', [
-            'catalog'=> $catalog,
+        $limit = $page * GOOD_PER_PAGE;
+        $start = 0;
+        $response = [
+            'success' => 'ok',
             'page' => $page,
-        ]);
+            'catalog' => Good::getLimit($start, $limit)
+        ];
+        echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        die();
     }
 
     public function actionCard()

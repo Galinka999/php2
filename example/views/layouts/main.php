@@ -11,7 +11,7 @@
         <?= $menu ?>
         <?= $content ?>
     </div>
-</div>
+
 
 
 <script src="/scrypt/jquery-3.5.1.min.js"></script>

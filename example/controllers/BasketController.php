@@ -20,19 +20,24 @@ class BasketController extends Controller
     }
 
     public function actionAdd() {
-        $id_good = (int)$_POST['id_good'];
+        $id_good = (int)$_GET['id_good'];
         $session_id = session_id();
         (new Basket($session_id,$id_good))->save();
-        header("Location:" . $_SERVER['HTTP_REFERER']);
+
+        $response = [
+            'success' => 'ok',
+            'count' => Basket::getCountWhere('session_id', session_id())
+        ];
+        echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function actionDelete() {
-        $id_good = (int)$_POST['id_good'];
-        $session_id = session_id();
-//        var_dump($id_good, $session_id);
-        (new Basket($session_id,$id_good))->delete();
-        header("Location:" . $_SERVER['HTTP_REFERER']);
-        die();
-    }
+//    public function actionDelete() {
+//        $id_good = (int)$_POST['id_good'];
+//        $session_id = session_id();
+////        var_dump($id_good, $session_id);
+//        (new Basket($session_id,$id_good))->delete();
+//        header("Location:" . $_SERVER['HTTP_REFERER']);
+//        die();
+//    }
 
 }

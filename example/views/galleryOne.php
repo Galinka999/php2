@@ -4,8 +4,9 @@
 <?php else: ?>
         <div>
             <h2>Одна картинка</h2>
+            <p>Просмотров: <?=$galleryOne->likes?></p>
             <img class="img-good-big" src="/images/big/<?= $galleryOne->filename ?>">
-            <p>Likes: <?= $galleryOne->likes ?></p>
+<!--            <p>Likes: --><?//= $galleryOne->likes ?><!--</p>-->
         </div>
 <?php endif; ?>
 <div>
