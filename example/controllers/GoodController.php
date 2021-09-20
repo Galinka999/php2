@@ -34,7 +34,6 @@ class GoodController extends Controller
             'catalog' => Good::getLimit($start, $limit)
         ];
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        die();
     }
 
     public function actionCard()

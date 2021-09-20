@@ -7,7 +7,7 @@
         <img class="img-good-big" src="<?= $good->photo ?>">
         <p><?=$good->description?></p>
         <p>Стоимость: <?= $good->price; ?></p>
-        <button data-id="<?= $good->id; ?>" class="buy">Купить</button>
+        <button data-id="<?= $good->id; ?>" onclick="buy(<?= $good->id; ?>)" class="buy">Купить</button>
 
 <!--        <form action="../../basket/add" method="post">-->
 <!--            <input type="text" name="id_good" hidden value="--><?//= $good->id ?><!--">-->

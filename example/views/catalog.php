@@ -11,7 +11,7 @@
             </a>
             <img class="img-good" src="<?= $item['photo'] ?>">
             <p>Стоимость: <?= $item['price']?></p>
-            <button data-id="<?= $item['id']?>" class="buy">Купить</button>
+            <button data-id="<?= $item['id']?>" onclick="buy(<?= $item['id']?>)" class="buy">Купить</button>
 
 <!--            <form action="/basket/add" method="post">-->
 <!--                <input type="text" name="id_good" hidden value="--><?//= $item['id'] ?><!--">-->
