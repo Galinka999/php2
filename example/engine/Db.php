@@ -52,6 +52,7 @@ class Db
     {
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
+//        var_dump($stmt);
         return $stmt;  // вщзвращает PDO для дальнейшей работы
     }
 

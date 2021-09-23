@@ -1,5 +1,5 @@
 console.log('Привет, Мир!');
-
+//поздгрузка товаров в каталоге (кнопка ЕЩЕ)
 let showmoreBtn = document.querySelectorAll('#showmore-btn');
 showmoreBtn.forEach((elem)=>{
     elem.addEventListener('click', ()=>{
@@ -26,7 +26,7 @@ showmoreBtn.forEach((elem)=>{
         }
     })
 });
-
+//вывод товаров в каталоге
 function renderCatalog(answer) {
     // console.log(answer.catalog.length);
     let newcatalog = document.getElementById('catalog');
@@ -45,7 +45,7 @@ function renderCatalog(answer) {
         newcatalog.appendChild(tr);
     })
 }
-
+//добавление товаров в корзину (кнопка КУПИТЬ)
 function buy(id) {
     (
         async () => {
@@ -53,6 +53,21 @@ function buy(id) {
             const answer = await response.json();
             console.log(answer);
             document.getElementById('count').innerText = answer.count;
+        }
+    )();
+}
+//удаление товаров из корзины (кнопка УДАЛИТЬ)
+function deleteFromBasket(id) {
+    (
+        async () => {
+            const response = await fetch('/basket/delete/?basket_id=' + id);
+            const answer = await response.json();
+            console.log(answer);
+            let count = document.getElementById('count').innerText = answer.count;
+            document.getElementById(id).remove();
+            if (count == 0) {
+                window.location.href = window.location.href;  //перезагрузка страницы
+            }
         }
     )();
 }

@@ -93,13 +93,8 @@ abstract class DbModel extends Model
 
     public function delete()
     {
-//        $params = [];
-//        foreach ($this->props as $key => $value)
-//        {
-//            $params[":{$key}"] = $this->$key;
-//        }
         $tableName = static::getTableName();
-        $sql = "DELETE FROM `{$tableName}` WHERE id = :id";  //$this->>id
+        $sql = "DELETE FROM `{$tableName}` WHERE `id` = :id";  //$this->>id
         return Db::getInstanсe()->execute($sql, ['id' => $this->id]);
     }
 
@@ -113,6 +108,5 @@ abstract class DbModel extends Model
             $this->update();
         }
     }
-
     abstract static public function getTableName();
 }
