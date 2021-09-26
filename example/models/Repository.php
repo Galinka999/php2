@@ -6,107 +6,121 @@ namespace app\models;
 
 use app\engine\Db;
 
-abstract class DbModel extends Model
+abstract class Repository
 {
-    public static function getAll()
+    abstract protected function getTableName();
+    abstract protected function getEntityClass();
+
+
+    public function getAll()
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
         return Db::getInstanсe()->queryAll($sql);                      //ВЫВОДИТ МАССИВ С МАССИВАМИ
 //        return Db::getInstanсe()->queryAllObject($sql, $params = null, static::class);   //ВЫВОДИТ МАССИВ С ОБЪЕКТАМИ НЕ РАБОТАЕТ!
     }
 
-    public static function  getWhere($name, $value) {
+    public function  getWhere($name, $value) {
         //собран запрос вида WHERE 'login' = 'admin'
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE `{$name}` = :value";
-        return Db::getInstanсe()->queryOneObject($sql, ['value' => $value], static::class);
+        return Db::getInstanсe()->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
     }
 
-    public static function getCountWhere($name, $value) {
-        $tableName = static::getTableName();
+    public function getCountWhere($name, $value) {
+        $tableName = $this->getTableName();
         $sql = "SELECT count(`id`) as count FROM {$tableName} WHERE `{$name}` = :value";
         return Db::getInstanсe()->queryOne($sql, ['value' => $value])['count'];
     }
 
-    public static function getCount()
+    public function getCount()
     {
-        $tableName = static ::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT count(`id`) as count FROM {$tableName}";
         $total = Db::getInstanсe()->query($sql)->fetch(\PDO::FETCH_COLUMN);
         return $total;
     }
 
-    public static function getLimit($start, $limit)
+    public function getLimit($start, $limit)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT ?, ?";
         return Db::getInstanсe()->queryLimit($sql, $start, $limit);
     }
 
     //CRUD Active Record
-    public static function getOne($id)
+
+//$good = (new GoodRepository())->getOne($id);
+    public function getOne($id)
     {
-        $tableName = static ::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id"; // используем плейсхолдер
 //        return Db::getInstanсe()->queryOne($sql, ['id' => $id]);                      //ВЫВОДИТ МАССИВ
-        return Db::getInstanсe()->queryOneObject($sql, ['id' => $id], static::class);   //ВЫВОДИТ ОБЪЕКТ
+        return Db::getInstanсe()->queryOneObject($sql, ['id' => $id], $this->getEntityClass());   //ВЫВОДИТ ОБЪЕКТ
     }
 
-    public function insert()
+
+//$good = new Good('Чай' .... );
+//(new GoodRepository())->save($good);
+    public function insert(Model $entity)
     {
         $params =[];
         $columns =[];
 
-        foreach ($this->props as $key => $value)
+        foreach ($entity->props as $key => $value)
         {
-            $params[":{$key}"] = $this->$key;
+            $params[":{$key}"] = $entity->$key;
             $columns[] = $key;
         }
         $columns = implode(", ", $columns);
         $values = implode(", ", array_keys($params));
-        $tableName = static::getTableName();
-        $sql = "INSERT INTO {$tableName} ($columns) VALUES ($values)";
+        $tableName = $this->getTableName();
+        $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$values})";
         //INSERT INTO {$this->getTableName()}(`name`, `description`, `price`) VALUES (:name, :description, :price)
         Db::getInstanсe()->execute($sql, $params);
-        $this->id = Db::getInstanсe()->lastInsertId();
-        return $this;
+        $entity->id = Db::getInstanсe()->lastInsertId();
+//        return $this;
     }
 
-    public function update()
+//$good = (new GoodRepository())->getOne($id);
+//$good->price = 44;
+//(new GoodRepository())->save($good);
+    public function update(Model $entity)
     {
         $params = [];
         $columns = [];
 
-        foreach ($this->props as $key => $value) {
+        foreach ($entity->props as $key => $value) {
             if ($value) continue;
-            $params[":{$key}"] = $this->$key;
+            $params[":{$key}"] = $entity->$key;
             $columns[].= "`{$key}` = :{$key}";
-            $this->props[$key] = false;
+            $entity->props[$key] = false;
         }
         $columns = implode(",", $columns);
-        $tableName = static::getTableName();
-        $params['id'] = $this->id;
+        $tableName = $this->getTableName();
+        $params['id'] = $entity->id;
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE `id` = :id";
         Db::getInstanсe()->execute($sql, $params);
     }
 
-    public function delete()
+//$good = (new GoodRepository())->getOne($id);
+//(new GoodRepository())->delete($good);
+    public function delete(Model $entity)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "DELETE FROM `{$tableName}` WHERE `id` = :id";  //$this->>id
-        return Db::getInstanсe()->execute($sql, ['id' => $this->id]);
+        return Db::getInstanсe()->execute($sql, ['id' => $entity->id]);
     }
 
     //END CRUD
 
-    public function save()
+    public function save(Model $entity)
     {
-        if (is_null($this->id)) {
-            $this->insert();
+        if (is_null($entity->id)) {
+            $this->insert($entity);
         } else {
-            $this->update();
+            $this->update($entity);
         }
     }
-    abstract static public function getTableName();
+
 }

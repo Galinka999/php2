@@ -4,8 +4,9 @@
 namespace app\controllers;
 
 use app\engine\Session;
-use app\models\User;
+use app\models\entities\User;
 use app\engine\Request;
+use app\models\repositories\UserRepository;
 
 class AuthController extends Controller
 {
@@ -13,7 +14,7 @@ class AuthController extends Controller
         $login = (new Request())->getParams()['login'];
         $pass = (new Request())->getParams()['pass'];
         //User::auth($login,$pass);
-        if (User::auth($login,$pass)) {
+        if ((new UserRepository())->auth($login,$pass)) {
             header("Location:" . $_SERVER['HTTP_REFERER']);
             die();
         } else {

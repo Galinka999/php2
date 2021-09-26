@@ -1,10 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
 
+use app\models\Model;
 use app\engine\Db;
 
-class Gallery extends DbModel
+class Gallery extends Model
 {
     protected $id = null;
     protected $filename;
@@ -19,10 +20,5 @@ class Gallery extends DbModel
     {
         $this->filename = $filename;
         $this->likes = $likes;
-    }
-
-    public static function getTableName()
-    {
-        return 'images';
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
 
-namespace app\models;
+namespace app\models\entities;
 
+use app\models\Model;
 
-class News extends DbModel
+class News extends Model
 {
     protected $id = null;
     protected $title;

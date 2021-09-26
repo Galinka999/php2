@@ -1,10 +1,11 @@
 <?php
 
 
-namespace app\models;
+namespace app\models\entities;
 
+use app\models\Model;
 
-class Order extends DbModel
+class Order extends Model
 {
     protected $id = null;
     protected $name;
@@ -18,10 +19,4 @@ class Order extends DbModel
         'session_id' => false,
         'status' => false
     ];
-
-
-    public static function getTableName()
-    {
-        return 'orders';
-    }
 }

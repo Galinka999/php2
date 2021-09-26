@@ -1,0 +1,22 @@
+<?php
+
+
+namespace app\models\repositories;
+
+
+use app\models\entities\Order;
+use app\models\Repository;
+
+class OrderRepository extends Repository
+{
+
+    protected function getTableName()
+    {
+        return 'orders';
+    }
+
+    protected function getEntityClass()
+    {
+        return Order::class;
+    }
+}

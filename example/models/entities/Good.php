@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models; //клфсс Product оказался в какой-либо неизвестной папке my_shop
+namespace app\models\entities; //клфсс Product оказался в какой-либо неизвестной папке my_shop
 
-
+use app\models\Model;
 use app\engine\Db;
 
-class Good extends DbModel
+class Good extends Model
 {
     protected $id = null;
     protected $title;
@@ -30,9 +30,5 @@ class Good extends DbModel
         $this->photo = $photo;
     }
 
-    public static function getTableName()
-    {
-        return 'goods';
-    }
 }
 
