@@ -66,7 +66,13 @@ function buy(id) {
 function deleteFromBasket(id) {
     (
         async () => {
-            const response = await fetch('/basket/delete/?basket_id=' + id);
+            const response = await fetch('/basket/delete', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json; charset=utf-8'},
+                body: JSON.stringify({
+                    id: id
+                })
+            });
             const answer = await response.json();
             console.log(answer);
             let count = document.getElementById('count').innerText = answer.count;

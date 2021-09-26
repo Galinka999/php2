@@ -7,8 +7,8 @@ session_start();
 use app\models\{Good, User, Order, News, Basket};
 use app\engine\Autoload;
 use app\engine\Db;
-use app\engine\Render;
-use \app\engine\TwigRender;
+use app\engine\{Render, TwigRender, Request};
+
 
 //TODO сделать путь абсолютным
 include_once "../config/Config.php";
@@ -17,10 +17,10 @@ include_once '../vendor/autoload.php';
 
 spl_autoload_register([new Autoload(), 'loadClass']); //регистрирует автозагрузчик
 
-$url = explode('/', $_SERVER['REQUEST_URI']);
+$request = new Request();
 
-$controllerName = $url[1] ?: 'index';
-$actionName = $url[2];
+$controllerName = $request->getControllerName() ?: 'index';
+$actionName = $request->getActionName();
 
 $controllerClass = CONTROLLER_NAMESPACE . ucfirst($controllerName) . "Controller";
 

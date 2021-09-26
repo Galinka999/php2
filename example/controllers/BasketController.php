@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\Basket;
+use app\engine\Request;
 
 class BasketController extends Controller
 {
@@ -19,9 +20,7 @@ class BasketController extends Controller
     public function actionAdd() {
 //        $id_good = (int)$_POST['id'];
 
-        $data = file_get_contents('php://input');
-        $data = json_decode($data); // декодировали в объект
-        $id_good = $data->id;
+        $id_good = (new Request()) ->getParams()['id'];
 
         $session_id = session_id();
         (new Basket($session_id,$id_good))->save();
@@ -35,7 +34,10 @@ class BasketController extends Controller
     }
 
     public function actionDelete() {
-        $basket_id = (int)$_GET['basket_id'];
+//        $basket_id = (int)$_GET['basket_id'];
+
+        $basket_id = (new Request())->getParams()['id'];
+
         $session_id = session_id();
         $basket = Basket::getOne($basket_id);
         $error = 'ok';
