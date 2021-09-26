@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\engine\Request;
 use app\models\Good;
 
 class GoodController extends Controller
@@ -11,7 +12,8 @@ class GoodController extends Controller
 
     public function actionCatalog()
     {
-        $page = $_GET['page'] ?: 1;
+        $page = new Request();
+        $page = $page->getParams()['page'] + 1;
         $count = ceil(Good::getCount() / GOOD_PER_PAGE); // количество страниц
         $start = 0;
         $limit = $page * GOOD_PER_PAGE;
@@ -25,7 +27,8 @@ class GoodController extends Controller
 
     public function actionAjax()
     {
-        $page = (int)$_GET['page'];
+        $page = new Request();
+        $page = $page->getParams()['page'];
         $limit = $page * GOOD_PER_PAGE;
         $start = 0;
         $response = [
@@ -38,7 +41,8 @@ class GoodController extends Controller
 
     public function actionCard()
     {
-        $id = (int)$_GET['id'];
+        $id = new Request();
+        $id = $id->getParams()['id'];
         $good = Good::getOne($id);
         echo $this->render('card',[
             'good' => $good

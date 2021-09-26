@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\engine\Session;
 use app\models\Basket;
 use app\engine\Request;
 
@@ -21,8 +22,8 @@ class BasketController extends Controller
 //        $id_good = (int)$_POST['id'];
 
         $id_good = (new Request()) ->getParams()['id'];
-
-        $session_id = session_id();
+        $session = new Session();
+        $session_id = $session->id();
         (new Basket($session_id,$id_good))->save();
 
         $response = [
@@ -37,18 +38,15 @@ class BasketController extends Controller
 //        $basket_id = (int)$_GET['basket_id'];
 
         $basket_id = (new Request())->getParams()['id'];
-
-        $session_id = session_id();
+        $session = new Session();
+        $session_id = $session->id();
         $basket = Basket::getOne($basket_id);
         $error = 'ok';
 
         if ($session_id == $basket->session_id) {
             $basket->delete();
-        }
-
-        if (empty($basket)) {
-            $error = 'non';
-//            header("Location:" . $_SERVER["HTTP_REFERER"]);
+        } else {
+            $error = "Нет прав";
         }
 
         $response = [

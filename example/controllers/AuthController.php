@@ -3,6 +3,7 @@
 
 namespace app\controllers;
 
+use app\engine\Session;
 use app\models\User;
 use app\engine\Request;
 
@@ -21,7 +22,8 @@ class AuthController extends Controller
     }
 
     public function actionLogout() {
-        session_destroy();
+        $session = new Session();
+        $session->destroy();
         header("Location:" . $_SERVER['HTTP_REFERER']);
         die();
     }
