@@ -17,7 +17,12 @@ class BasketController extends Controller
     }
 
     public function actionAdd() {
-        $id_good = (int)$_GET['id_good'];
+//        $id_good = (int)$_POST['id'];
+
+        $data = file_get_contents('php://input');
+        $data = json_decode($data); // декодировали в объект
+        $id_good = $data->id;
+
         $session_id = session_id();
         (new Basket($session_id,$id_good))->save();
 

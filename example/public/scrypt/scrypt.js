@@ -49,7 +49,13 @@ function renderCatalog(answer) {
 function buy(id) {
     (
         async () => {
-            const response = await fetch('/basket/add/?id_good=' + id);
+            const response = await fetch('/basket/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json; charset=utf-8'},
+                body: JSON.stringify({
+                    id: id
+                })
+            });
             const answer = await response.json();
             console.log(answer);
             document.getElementById('count').innerText = answer.count;
